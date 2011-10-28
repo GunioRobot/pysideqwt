@@ -27,7 +27,7 @@ set(qwt_SRC
   ${CMAKE_CURRENT_BINARY_DIR}/PySideQwt/qwtdial_wrapper.cpp
   ${CMAKE_CURRENT_BINARY_DIR}/PySideQwt/qwtscaledraw_wrapper.cpp
   ${CMAKE_CURRENT_BINARY_DIR}/PySideQwt/qwtsymbol_wrapper.cpp
-  
+
   ${CMAKE_CURRENT_BINARY_DIR}/PySideQwt/qwtpicker_wrapper.cpp
   ${CMAKE_CURRENT_BINARY_DIR}/PySideQwt/qwtplotpicker_wrapper.cpp
 

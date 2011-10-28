@@ -145,16 +145,16 @@ int try_NumericArray_to_QImage(PyObject *in, QImage **out)
 
     if (!PyArray_Check(in))
         return 0;
-    
+
     if (2 != PyArray_NDIM(in)) {
         PyErr_SetString(PyExc_RuntimeError, "Array must be 2-dimensional");
         return -1;
     }
-    
+
     const int ny = PyArray_DIM(in, 0);
     const int nx = PyArray_DIM(in, 1);
     const int stride = PyArray_STRIDE(in, 0);
-    
+
     //  8 bit data
     if (PyArray_TYPE(in) == PyArray_UBYTE) {
 #if QT_VERSION < 0x040000
@@ -191,12 +191,12 @@ int try_NumericArray_to_QImage(PyObject *in, QImage **out)
         for (int i=0; i<ny; i++) {
             memcpy((*out)->scanLine(i), data, stride);
             data += stride;
-        }        
+        }
         return 1;
     }
-    
+
     PyErr_SetString(PyExc_RuntimeError, "Data type must be uint8, or uint32");
-    
+
     return -1;
 }
 
@@ -220,7 +220,7 @@ PyObject *toNumeric(const QImage &image)
         }
     } else {
         PyErr_SetString(PyExc_RuntimeError, "Image depth must be 8 or 32");
-        return 0;        
+        return 0;
     }
 
     char *data = PyArray_BYTES(result);

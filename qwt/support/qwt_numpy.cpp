@@ -141,11 +141,11 @@ int try_NumPyArray_to_QImage(PyObject *in, QImage **out)
         PyErr_SetString(PyExc_RuntimeError, "Array must be 2-dimensional");
         return -1;
     }
-    
+
     const npy_intp ny = PyArray_DIM(in, 0);
     const npy_intp nx = PyArray_DIM(in, 1);
     const npy_intp stride = PyArray_STRIDE(in, 0);
-    
+
     //  8 bit data
     if (PyArray_TYPE(in) == NPY_UINT8) {
 #if QT_VERSION < 0x040000
@@ -178,16 +178,16 @@ int try_NumPyArray_to_QImage(PyObject *in, QImage **out)
             PyErr_SetString(PyExc_RuntimeError, "Failed to create a QImage");
             return -1;
         }
-        char *data = PyArray_BYTES(in);  
+        char *data = PyArray_BYTES(in);
         for (int i=0; i<ny; i++) {
             memcpy((*out)->scanLine(i), data, stride);
             data += stride;
         }
         return 1;
     }
-    
+
     PyErr_SetString(PyExc_RuntimeError, "Data type must be uint8, or uint32");
-    
+
     return -1;
 }
 

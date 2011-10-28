@@ -36,12 +36,12 @@
 
 // The NumPy Array Interface
 typedef struct {
-    int two;       
-    int nd;            
-    char typekind;     
-    int itemsize;      
-    int flags;         
-    Py_intptr_t *shape; 
+    int two;
+    int nd;
+    char typekind;
+    int itemsize;
+    int flags;
+    Py_intptr_t *shape;
     Py_intptr_t *strides;
     void *data;
     PyObject *descr;
@@ -84,7 +84,7 @@ void trace(PyArrayInterface *source)
         fprintf(stderr, " ARR_HAS_DESCR");
     }
     fprintf(stderr, "\n");
-    fprintf(stderr, "shape: (");    
+    fprintf(stderr, "shape: (");
     if (source->nd==1) {
         fprintf(stderr, "%i,", int(source->shape[0]));
     } else if (source->nd>1) {
@@ -122,7 +122,7 @@ int try_NDArray_to_QwtArray(PyObject *in, QwtArray<double> &out)
         return 0;
     }
 
-    PyArrayInterface *source = 
+    PyArrayInterface *source =
         reinterpret_cast<PyArrayInterface *>(PyCObject_AsVoidPtr(csource));
     if (!source) { // FIXME
         return 0;
@@ -131,7 +131,7 @@ int try_NDArray_to_QwtArray(PyObject *in, QwtArray<double> &out)
 #ifdef TRACE_PYQWT
     trace(source);
 #endif
-    
+
     int stride;
 
     if ((source->two != 2)|| (source->nd != 1)) {
@@ -193,7 +193,7 @@ int try_NDArray_to_QwtArray(PyObject *in, QwtArray<double> &out)
     } else {
         goto error;
     }
- 
+
     Py_DECREF(csource);
     return 1;
 
@@ -221,7 +221,7 @@ int try_NDArray_to_QwtArray(PyObject *in, QwtArray<int> &out)
         return 0;
     }
 
-    PyArrayInterface *source = 
+    PyArrayInterface *source =
         reinterpret_cast<PyArrayInterface *>(PyCObject_AsVoidPtr(csource));
     if (!source) { // FIXME
         return 0;
@@ -303,16 +303,16 @@ int try_NDArray_to_QwtArray(PyObject *in, QwtArray<long> &out)
         return 0;
     }
 
-    PyArrayInterface *source = 
+    PyArrayInterface *source =
         reinterpret_cast<PyArrayInterface *>(PyCObject_AsVoidPtr(csource));
     if (!source) { // FIXME
         return 0;
     }
-        
+
 #ifdef TRACE_PYQWT
     trace(source);
 #endif
-        
+
     int stride;
 
     if ((source->two != 2) || (source->nd != 1)) {
@@ -386,7 +386,7 @@ int try_NDArray_to_QImage(PyObject *in, QImage **out)
         return 0;
     }
 
-    PyArrayInterface *source = 
+    PyArrayInterface *source =
         reinterpret_cast<PyArrayInterface *>(PyCObject_AsVoidPtr(csource));
     if (!source) { // FIXME
         return 0;
@@ -395,7 +395,7 @@ int try_NDArray_to_QImage(PyObject *in, QImage **out)
 #ifdef TRACE_PYQWT
     trace(source);
 #endif
-        
+
     if (!((source->two==2) && (source->nd==2) && (source->flags&CONTIGUOUS))) {
         Py_DECREF(csource);
         PyErr_SetString(PyExc_RuntimeError, "Array must be contiguous and 2-D");
@@ -417,7 +417,7 @@ int try_NDArray_to_QImage(PyObject *in, QImage **out)
                             "failed to create a 8 bit image");
             return -1;
         }
-        char *data = static_cast<char *>(source->data);  
+        char *data = static_cast<char *>(source->data);
         for (int i=0; i<ny; i++) {
             memcpy((*out)->scanLine(i), data, stride);
             data += stride;
@@ -442,8 +442,8 @@ int try_NDArray_to_QImage(PyObject *in, QImage **out)
                             "failed to create a 32 bit image");
             return -1;
         }
-        
-        char *data = static_cast<char *>(source->data);  
+
+        char *data = static_cast<char *>(source->data);
         for (int i=0; i<ny; i++) {
             memcpy((*out)->scanLine(i), data, stride);
             data += stride;
@@ -451,7 +451,7 @@ int try_NDArray_to_QImage(PyObject *in, QImage **out)
         Py_DECREF(csource);
         return 1;
     }
-    
+
     PyErr_SetString(PyExc_RuntimeError, "Data type must be uint8 or uint32");
     Py_DECREF(csource);
 
